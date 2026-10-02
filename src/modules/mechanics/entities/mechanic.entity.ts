@@ -9,7 +9,7 @@ export class Mechanic {
    name: string;
 
    @Column()
-   lastname: string;
+   lastname?: string;
 
    @Column()
    gender: string;
@@ -28,10 +28,10 @@ export class Mechanic {
    passwordHash: string;
 
    @Column()
-   experienceYears: number;
+   experienceYears?: number;
 
    @Column()
-   specialties: string[];
+   specialties?: string;
 
    @Column({ default: true })
    isActive: boolean;

@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Body, HttpStatus, HttpCode, UseGuards } from '@nestjs/common';
+import { Controller, Post, Get, Body, HttpStatus, HttpCode, UseGuards, Param } from '@nestjs/common';
 import { MechanicsService } from './mechanics.service';
 import { MechanicDto } from './dto/mechanic.dto';
 import { Throttle } from '@nestjs/throttler';
@@ -22,6 +22,11 @@ export class MechanicsController {
   @Get()
   async getAllMechanics() {
     return await this.mechanicsService.findAll();
+  }
+
+  @Get(":id")
+  async getMechanicById(@Param("id") id: string){
+    return await this.mechanicsService.findById(id);
   }
 
   @Post('login')

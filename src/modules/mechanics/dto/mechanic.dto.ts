@@ -17,8 +17,7 @@ export class MechanicDto {
   name: string;
 
   @IsString()
-  @IsNotEmpty({ message: 'ກະລຸນາປ້ອນນາມສະກຸນ' })
-  lastname: string;
+  lastname?: string;
 
   @IsString()
   @IsNotEmpty({ message: 'ກະລຸນາປ້ອນເພດ' })
@@ -45,14 +44,10 @@ export class MechanicDto {
   password: string;
 
   @IsNumber()
-  experienceYears: number;
+  experienceYears?: number;
 
-  @IsArray()
-  @ArrayNotEmpty({
-    message: 'ກະລຸນາເລືອກຄວາມຊ່ຽວຊານ',
-  })
-  @IsString({ each: true })
-  specialties: string[];
+  @IsString()
+  specialties?: string;
 
   @IsBoolean()
   @IsOptional()

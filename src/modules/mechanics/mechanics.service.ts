@@ -1,4 +1,4 @@
-import { Injectable, ConflictException, UnauthorizedException } from '@nestjs/common';
+import { Injectable, ConflictException, UnauthorizedException, BadRequestException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MongoRepository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
@@ -6,6 +6,7 @@ import { Mechanic } from './entities/mechanic.entity';
 import { MechanicDto } from './dto/mechanic.dto';
 import { LoginMechanicDto } from './dto/login-mechanic.dto';
 import * as bcrypt from 'bcrypt';
+import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class MechanicsService {
@@ -54,7 +55,7 @@ export class MechanicsService {
     const { passwordHash, ...mechanicProfile } = mechanic;
 
     return {
-      message: 'ເຂົ້າสู่ລະບົບສຳເລັດ',
+      message: 'ເຂົ້າສູ່ລະບົບສຳເລັດ',
       access_token: accessToken,
       role: 'MECHANIC',
       user: mechanicProfile,
@@ -63,5 +64,18 @@ export class MechanicsService {
 
   async findAll(): Promise<Mechanic[]> {
     return await this.mechanicRepository.find();
+  }
+
+  async findById(id: string): Promise<Mechanic> {
+    if(!ObjectId.isValid(id)) {
+      throw new BadRequestException("Invalid mechanic id")
+    }
+    const mechanic = await this.mechanicRepository.findOneBy({
+      _id: new ObjectId(id)
+    })
+    if(!mechanic){
+      throw new NotFoundException("This Id is not found");
+    }
+    return mechanic;
   }
 }
